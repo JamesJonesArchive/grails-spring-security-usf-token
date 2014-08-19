@@ -20,6 +20,7 @@ class UsfTokenAuthenticationProvider implements AuthenticationProvider {
     def validateUrl
     def webappId
     def usfTokenService
+    def key
     
     // private TicketValidator ticketValidator;
     Authentication authenticate(Authentication customAuth) {
