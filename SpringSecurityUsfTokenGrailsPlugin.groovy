@@ -126,10 +126,11 @@ Brief summary/description of the plugin.
             authorityAttribNamesFromToken = conf.token.authorityAttribute
             tokenRequestHeader = conf.token.tokenRequestHeader
             authorityAttribute = conf.token.authorityAttribute
+            usernameAttribute = conf.token.usernameAttribute
         }
         
         SpringSecurityUtils.registerProvider 'usfTokenAuthenticationProvider'
-        SpringSecurityUtils.registerFilter 'casAuthenticationFilter', SecurityFilterPosition.CAS_FILTER
+        SpringSecurityUtils.registerFilter 'usfTokenAuthenticationFilter', SecurityFilterPosition.CAS_FILTER
         
         authenticationEntryPoint(edu.usf.cims.token.UsfTokenAuthenticationEntryPoint) {
             loginUrl = conf.token.serverUrlPrefix + conf.token.loginUri
@@ -142,18 +143,10 @@ Brief summary/description of the plugin.
         
         usfTokenAuthenticationFilter(edu.usf.cims.token.UsfTokenAuthenticationFilter) {
             authenticationManager = ref('usfTokenAuthenticationManager')
-            //sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
             authenticationSuccessHandler = ref('authenticationSuccessHandler')
             authenticationFailureHandler = ref('authenticationFailureHandler')
             rememberMeServices = ref('rememberMeServices')
-            //authenticationDetailsSource = ref('authenticationDetailsSource')
-            //serviceProperties = ref('casServiceProperties')
-            //proxyGrantingTicketStorage = ref('casProxyGrantingTicketStorage')
-            //filterProcessesUrl = conf.cas.filterProcessesUrl // '/j_spring_cas_security_check'
-            //continueChainBeforeSuccessfulAuthentication = conf.apf.continueChainBeforeSuccessfulAuthentication // false
-            //allowSessionCreation = conf.apf.allowSessionCreation // true
-            //proxyReceptorUrl = conf.cas.proxyReceptorUrl
-            
+            tokenHeader = conf.token.tokenHeader            
         }
         
         usfTokenAuthenticationProvider(edu.usf.cims.token.UsfTokenAuthenticationProvider) {
@@ -161,6 +154,7 @@ Brief summary/description of the plugin.
             validateUrl = conf.token.serverUrlPrefix + conf.token.validateUri
             webappId = conf.token.webappId
             usfTokenService = ref('usfTokenService')
+            key = conf.token.key
         }
 
     }
