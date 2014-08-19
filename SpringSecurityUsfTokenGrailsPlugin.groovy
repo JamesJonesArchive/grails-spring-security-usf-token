@@ -125,7 +125,7 @@ Brief summary/description of the plugin.
         userDetailsService(edu.usf.cims.token.UsfTokenUserDetailsService){
             authorityAttribNamesFromToken = conf.token.authorityAttribute
             tokenRequestHeader = conf.token.tokenRequestHeader
-            userMapper = ref('domainUserMapperService')
+            authorityAttribute = conf.token.authorityAttribute
         }
         
         SpringSecurityUtils.registerProvider 'usfTokenAuthenticationProvider'
