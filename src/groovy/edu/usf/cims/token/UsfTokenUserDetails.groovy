@@ -51,6 +51,13 @@ class UsfTokenUserDetails extends GrailsUser {
         )
         this.attributes = attributes
     }
+    
+    Map getAttributes() { attributes }
+    
+    String findByUsername(username){
+        def user = null
+        user
+    }
 }
 
 
