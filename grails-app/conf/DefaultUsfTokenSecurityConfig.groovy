@@ -13,23 +13,14 @@
  * limitations under the License.
  */
 security {
-	token {
-		active = true
-		loginUri = null // must be set, e.g. '/login'
-		validateUri = null // must be set, e.g. '/validate'
-                webappId = null // must have a registered webapp ID
-                tokenRequestHeader = 'X-Auth-Token' // Typically uses 'X-Auth-Token'
-		sendRenew = false
-		serviceUrl = null // must be set, e.g. 'http://localhost:8080/myapp/j_spring_cas_security_check'
-		serverUrlPrefix = null // must be set, e.g. 'http://localhost:9090/cas'
-		key = 'grails-spring-security-usf-token'
-		artifactParameter = 'ticket'
-		serviceParameter = 'service'
-		filterProcessesUrl = '/j_spring_cas_security_check'
-		proxyCallbackUrl = null // should be set, e.g. 'http://localhost:8080/myapp/secure/receptor'
-		proxyReceptorUrl = null // should be set, e.g. '/secure/receptor'
-		useSingleSignout = true
-		useSamlValidator = true
-		driftTolerance = 120000
-	}
+    token {
+        webappId = null // must have a registered webapp ID
+        serverUrlPrefix = null // must be set, e.g. 'http://localhost:9090/cas'
+        loginUri = null // must be set, e.g. '/login'
+        validateUri = null // must be set, e.g. '/validate'
+        authorityAttribute = null // must be set, e.g. 'eduPersonEntitlement'
+        usernameAttribute = null // must be set, e.g. 'sub'
+        tokenHeader = null // must be set, e.g. 'X-Auth-Token'
+        key = 'grails-spring-security-usf-token'
+    }
 }
