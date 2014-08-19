@@ -61,7 +61,7 @@ Brief summary/description of the plugin.
             return
         }
         SpringSecurityUtils.loadSecondaryConfig 'DefaultUsfTokenSecurityConfig'
-        // have to get again after overlaying DefaultCasSecurityConfig
+        // have to get again after overlaying DefaultUsfTokenSecurityConfig
         conf = SpringSecurityUtils.securityConfig
 
         if (!conf.token.active) {
