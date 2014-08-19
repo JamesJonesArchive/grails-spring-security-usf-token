@@ -42,14 +42,14 @@ class UsfTokenUserDetailsService implements GrailsUserDetailsService {
      */
     private static final Boolean ADD_PREFIX = true
     private static final String PREFIX = "ROLE_"
-    private static final String USERNAME_TOKEN_ATTRIBUTE = "sub"
     /**
      * Some Spring Security classes (e.g. RoleHierarchyVoter) expect at least
      * one role, so we give a user with no granted roles this one which gets
      * past that restriction but doesn't grant anything.
      */
     static final List NO_ROLES = [new GrantedAuthorityImpl(SpringSecurityUtils.NO_ROLE)]
-    private def authorityAttribNamesFromToken // Usually "eduPersonEntitlement"
+    private def authorityAttribute // Usually "eduPersonEntitlement"
+    private def usernameAttribute // Usually "sub"
     private boolean convertToUpperCase = true
     private String tokenRequestHeader // Usually "X-Auth-Token"
     
@@ -76,17 +76,17 @@ class UsfTokenUserDetailsService implements GrailsUserDetailsService {
         def claims = JSON.parse(jwt.getClaims())
         // Build list of entitlements as GrantedAuthorities
         def tokenAuthorities = { ->
-            if(authorityAttribNamesFromToken in claims) {
-                return claims[authorityAttribNamesFromToken].collect { authority ->
+            if(authorityAttribute in claims) {
+                return claims[authorityAttribute].collect { authority ->
                     return (ADD_PREFIX)?new GrantedAuthorityImpl(PREFIX + (this.convertToUpperCase?authority.toUpperCase():authority)):new GrantedAuthorityImpl((this.convertToUpperCase?authority.toUpperCase():authority))
                 }
             }
             return NO_ROLES
         }.call()
         // Check to make sure there is a username in the claims
-        if(!(USERNAME_TOKEN_ATTRIBUTE in claims)) throw new UsernameNotFoundException('User not in Token')
+        if(!(usernameAttribute in claims)) throw new UsernameNotFoundException('User not in Token')
         return new UsfTokenUserDetails(
-            claims[USERNAME_TOKEN_ATTRIBUTE],
+            claims[usernameAttribute],
             tokenAuthorities,
             claims.inject([jwt:token]) { ta,k,v ->
                 if(!(k in ['exp','iss','aud','nbf','jti','iat'])) {
