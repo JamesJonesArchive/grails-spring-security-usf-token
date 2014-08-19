@@ -1,0 +1,7 @@
+*.log
+target/*
+plugin.xml
+testapps.config.groovy
+target/*
+test/projects/UsfTokenPluginTest/target/*
+docs/*
