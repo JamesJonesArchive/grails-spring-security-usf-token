@@ -29,20 +29,18 @@ import org.springframework.security.core.AuthenticationException
  */
 class UsfTokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private static final logger = LogFactory.getLog(this)
+    def tokenHeader
     public UsfTokenAuthenticationFilter(String defaultFilterProcessesUrl) {
         super(defaultFilterProcessesUrl);
         // super.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(defaultFilterProcessesUrl));
         setAuthenticationManager(new UsfTokenAuthenticationManager());
         // setAuthenticationSuccessHandler(new AuthenticationSuccessHandler());
-    }
-    
-    public final String SECURITY_TOKEN_HEADER = "X-Auth-Token";
-    
+    }    
     /**
      * Attempt to authenticate request - basically just pass over to another method to authenticate request headers
      */
     @Override public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        String token = request.getHeader(SECURITY_TOKEN_HEADER);
+        String token = request.getHeader(tokenHeader);
         logger.info("token found:"+token);
         AbstractAuthenticationToken userAuthenticationToken = authUserByToken(token);
         if(userAuthenticationToken == null) throw new AuthenticationServiceException(MessageFormat.format("Error | {0}", "Bad Token"));
