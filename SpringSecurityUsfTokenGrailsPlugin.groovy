@@ -131,7 +131,7 @@ Brief summary/description of the plugin.
         SpringSecurityUtils.registerProvider 'usfTokenAuthenticationProvider'
         SpringSecurityUtils.registerFilter 'casAuthenticationFilter', SecurityFilterPosition.CAS_FILTER
         
-        authenticationEntryPoint(UsfTokenAuthenticationEntryPoint) {
+        authenticationEntryPoint(edu.usf.cims.token.UsfTokenAuthenticationEntryPoint) {
             loginUrl = conf.token.serverUrlPrefix + conf.token.loginUri
             webappId = conf.token.webappId
         }
@@ -140,7 +140,7 @@ Brief summary/description of the plugin.
                         
         usfTokenAuthenticationManager(edu.usf.cims.token.UsfTokenAuthenticationManager)
         
-        usfTokenAuthenticationFilter(UsfTokenAuthenticationFilter) {
+        usfTokenAuthenticationFilter(edu.usf.cims.token.UsfTokenAuthenticationFilter) {
             authenticationManager = ref('usfTokenAuthenticationManager')
             //sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
             authenticationSuccessHandler = ref('authenticationSuccessHandler')
@@ -156,7 +156,7 @@ Brief summary/description of the plugin.
             
         }
         
-        usfTokenAuthenticationProvider(UsfTokenAuthenticationProvider) {
+        usfTokenAuthenticationProvider(edu.usf.cims.token.UsfTokenAuthenticationProvider) {
             userDetailsService = ref('userDetailsService')
             validateUrl = conf.token.serverUrlPrefix + conf.token.validateUri
             webappId = conf.token.webappId
