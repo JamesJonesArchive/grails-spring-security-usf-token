@@ -22,6 +22,7 @@ target(main: "Creates artifacts for the Spring Security USF Token plugin") {
                         it.writeLine "grails.plugins.springsecurity.token.serverUrlPrefix = 'https://authtest.it.usf.edu/AuthTransferService/webtoken'"
 			it.writeLine "grails.plugins.springsecurity.token.loginUri = '/login'"
                         it.writeLine "grails.plugins.springsecurity.token.validateUri = '/validate'"
+                        it.writeLine "grails.plugins.springsecurity.token.filterProcessesUrl = '/j_spring_token_security_check'"
 			it.writeLine "grails.plugins.springsecurity.token.authorityAttribute = 'eduPersonEntitlement'"
                         it.writeLine "grails.plugins.springsecurity.token.usernameAttribute = 'sub'"
                         it.writeLine "grails.plugins.springsecurity.token.tokenHeader = 'X-Auth-Token'"
