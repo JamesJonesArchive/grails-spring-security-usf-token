@@ -47,6 +47,8 @@ grails.project.dependency.resolution = {
 
     plugins {
         compile ":spring-security-core:1.2.7.3"
+        compile ":spring-security-acl:1.1.1"
+        runtime ":cors:1.1.6"
         // runtime ":hibernate:$grailsVersion"
         // runtime ":jquery:1.8.3"
         // runtime ":resources:1.2"
