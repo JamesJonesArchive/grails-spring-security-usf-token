@@ -18,6 +18,7 @@ security {
         serverUrlPrefix = null // must be set, e.g. 'http://localhost:9090/cas'
         loginUri = null // must be set, e.g. '/login'
         validateUri = null // must be set, e.g. '/validate'
+        filterProcessesUrl = null // must be set, e.g. '/j_spring_token_security_check'"
         authorityAttribute = null // must be set, e.g. 'eduPersonEntitlement'
         usernameAttribute = null // must be set, e.g. 'sub'
         tokenHeader = null // must be set, e.g. 'X-Auth-Token'
