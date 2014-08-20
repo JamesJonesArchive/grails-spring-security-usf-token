@@ -5,3 +5,8 @@ testapps.config.groovy
 target/*
 test/projects/UsfTokenPluginTest/target/*
 docs/*
+test/projects/UsfTokenPluginTest/client/node_modules
+test/projects/UsfTokenPluginTest/client/dist
+test/projects/UsfTokenPluginTest/client/.tmp
+test/projects/UsfTokenPluginTest/client/.sass-cache
+test/projects/UsfTokenPluginTest/web-app/bower_components
