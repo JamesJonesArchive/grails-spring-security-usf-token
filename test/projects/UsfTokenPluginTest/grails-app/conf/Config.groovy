@@ -89,3 +89,15 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+// Added by the Spring Security USF Token plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'edu.usf.cims.token.UsfTokenUserDetails'
+grails.plugins.springsecurity.token.webappId = 'http://localhost:8080/UsfTokenPluginTest/'
+grails.plugins.springsecurity.token.serverUrlPrefix = 'https://authtest.it.usf.edu/AuthTransferService/webtoken'
+grails.plugins.springsecurity.token.loginUri = '/login'
+grails.plugins.springsecurity.token.validateUri = '/validate'
+grails.plugins.springsecurity.token.filterProcessesUrl = '/j_spring_token_security_check'
+grails.plugins.springsecurity.token.authorityAttribute = 'eduPersonEntitlement'
+grails.plugins.springsecurity.token.usernameAttribute = 'sub'
+grails.plugins.springsecurity.token.tokenHeader = 'X-Auth-Token'
+grails.plugins.springsecurity.token.key = '11d7b1213e9c3f08b73d89b1fc00bddc' //unique value for each app
