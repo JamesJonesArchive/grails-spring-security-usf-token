@@ -48,10 +48,10 @@ class UsfTokenUserDetailsService implements GrailsUserDetailsService {
      * past that restriction but doesn't grant anything.
      */
     static final List NO_ROLES = [new GrantedAuthorityImpl(SpringSecurityUtils.NO_ROLE)]
-    private def authorityAttribute // Usually "eduPersonEntitlement"
-    private def usernameAttribute // Usually "sub"
+    def authorityAttribute // Usually "eduPersonEntitlement"
+    def usernameAttribute // Usually "sub"
     private boolean convertToUpperCase = true
-    private String tokenRequestHeader // Usually "X-Auth-Token"
+    def tokenRequestHeader // Usually "X-Auth-Token"
     
     /** Dependency injection for creating and finding Users **/
     def userMapper
