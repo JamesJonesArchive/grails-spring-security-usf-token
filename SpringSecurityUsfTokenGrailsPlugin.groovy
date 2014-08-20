@@ -123,7 +123,7 @@ Brief summary/description of the plugin.
         println 'Configuring Spring Security USF Token ...'
         // Replace userDetailsService with a Token version - all userdetails will come from the token
         userDetailsService(edu.usf.cims.token.UsfTokenUserDetailsService){
-            authorityAttribNamesFromToken = conf.token.authorityAttribute
+            authorityAttribute = conf.token.authorityAttribute
             tokenRequestHeader = conf.token.tokenRequestHeader
             authorityAttribute = conf.token.authorityAttribute
             usernameAttribute = conf.token.usernameAttribute
@@ -141,11 +141,12 @@ Brief summary/description of the plugin.
                         
         usfTokenAuthenticationManager(edu.usf.cims.token.UsfTokenAuthenticationManager)
         
-        usfTokenAuthenticationFilter(edu.usf.cims.token.UsfTokenAuthenticationFilter) {
+        usfTokenAuthenticationFilter(edu.usf.cims.token.UsfTokenAuthenticationFilter,conf.token.filterProcessesUrl) {
             authenticationManager = ref('usfTokenAuthenticationManager')
             authenticationSuccessHandler = ref('authenticationSuccessHandler')
             authenticationFailureHandler = ref('authenticationFailureHandler')
             rememberMeServices = ref('rememberMeServices')
+            filterProcessesUrl = conf.token.filterProcessesUrl // '/j_spring_cas_security_check'
             tokenHeader = conf.token.tokenHeader            
         }
         
