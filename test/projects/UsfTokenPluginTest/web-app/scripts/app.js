@@ -15,8 +15,16 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'UsfCAStokenAuth'
   ])
+  .constant('UsfCAStokenAuthConstant',{
+    'applicationUniqueId': '1111222233334444555566667777',
+    'applicationResources': {
+        'tokenTest': 'http://localhost:8080/UsfTokenPluginTest/services/tokenTest'
+    },
+    'unauthorizedRoute': '/unauthorized'
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -26,6 +34,10 @@ angular
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
+      })
+      .when('/unauthorized', {
+        templateUrl: 'views/unauthorized.html',
+        controller: 'UnauthorizedCtrl'
       })
       .otherwise({
         redirectTo: '/'
