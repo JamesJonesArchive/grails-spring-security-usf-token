@@ -7,7 +7,9 @@ class UrlMappings {
             }
         }
 
-        // "/"(view:"/index")
+        "/services/tokenTest"(controller:"tokenTest",parseRequest: true){ 
+            action = [GET:"getUsername", PUT:"addRuleSet", DELETE:"error", POST:"error"] 
+        } // "/"(view:"/index")
         "/"(uri:"/index.html")
         "500"(view:'/error')
     }
