@@ -52,6 +52,7 @@ grails.plugins.springsecurity.token.serverUrlPrefix = 'https://authtest.it.usf.e
 grails.plugins.springsecurity.token.webappId = 'http://localhost:8080/${appName}/'
 grails.plugins.springsecurity.token.loginUri = '/login'
 grails.plugins.springsecurity.token.validateUri = '/validate'
+grails.plugins.springsecurity.token.filterProcessesUrl = '/j_spring_token_security_check'
 grails.plugins.springsecurity.token.authorityAttribute = 'eduPersonEntitlement'
 grails.plugins.springsecurity.token.usernameAttribute = 'sub'
 grails.plugins.springsecurity.token.tokenHeader = 'X-Auth-Token'
@@ -89,6 +90,7 @@ grails.plugins.springsecurity.token.serverUrlPrefix =
 |<sub>token.webappId</sub>	        | <sub>`http://localhost:8080/${appName}/`</sub>  | <sub>the 'root' of registered application  </sub>                                                                                                                                                                 |
 |<sub>token.loginUri</sub>	                | <sub>`/login`</sub>	                 | <sub>the login URI, relative to `token.serverUrlPrefix`, e.g. `/login` </sub>                                                                                                                                      |
 |<sub>token.validateUri</sub>	                | <sub>`/validate`</sub>	                 | <sub>the validate URI, relative to `token.serverUrlPrefix`, e.g. `/validate` </sub>                                                                                                                                      |
+|<sub>token.filterProcessesUrl</sub>	| <sub>`/j_spring_token_security_check`</sub>	| <sub>the URL that the filter intercepts for login</sub> |
 |<sub>token.authorityAttribute</sub>	                | <sub>`eduPersonEntitlement`</sub>	                 | <sub>the attribute of the JWT containing the GrantedAuthorities </sub>                                                                                                                                      |
 |<sub>token.usernameAttribute</sub>	                | <sub>`sub`</sub>	                 | <sub>the attribute of the JWT containing the username </sub>                                                                                                                                      |
 |<sub>token.key</sub>	| <sub>random value</sub>	| <sub>used by `CasAuthenticationProvider` to identify tokens it previously authenticated. Generated automatically by `grails usf-cas-config`</sub> |
