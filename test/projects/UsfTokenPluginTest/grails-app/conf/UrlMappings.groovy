@@ -8,8 +8,14 @@ class UrlMappings {
         }
 
         "/services/tokenTest"(controller:"tokenTest",parseRequest: true){ 
-            action = [GET:"getUsername", PUT:"addRuleSet", DELETE:"error", POST:"error"] 
-        } // "/"(view:"/index")
+            action = [GET:"getUsername", PUT:"error", DELETE:"error", POST:"error"] 
+        } 
+        "/services/tokenTest/attributes"(controller:"tokenTest",parseRequest: true){ 
+            action = [GET:"getAttributes", PUT:"error", DELETE:"error", POST:"error"] 
+        } 
+        "/services/tokenTest/eppa"(controller:"tokenTest",parseRequest: true){ 
+            action = [GET:"getEppa", PUT:"error", DELETE:"error", POST:"error"] 
+        } 
         "/"(uri:"/index.html")
         "500"(view:'/error')
     }
