@@ -21,4 +21,32 @@ class TokenTestController {
         }
     
     }
+    def getAttributes(){
+        def attributes = [attributes:usfTokenService.getAttributes()]
+        withFormat {
+            html {
+                return attributes
+            }
+            xml {
+                render attributes as XML
+            }
+            json {
+                JSON.use("deep") { render attributes as JSON }
+            }
+        }
+    }
+    def getEppa() {
+        def eppa = [eppa:usfTokenService.getEppa()]
+        withFormat {
+            html {
+                return eppa
+            }
+            xml {
+                render eppa as XML
+            }
+            json {
+                JSON.use("deep") { render eppa as JSON }
+            }
+        }
+    }
 }
