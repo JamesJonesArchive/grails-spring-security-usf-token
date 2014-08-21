@@ -108,6 +108,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
     '/login/**':                    ['permitAll'],
     '/logout/**':                   ['permitAll'],
     // Built in services
+    '/services/tokenTest':          ['isFullyAuthenticated()'],
     '/services/tokenTest/':         ['isFullyAuthenticated()'],
     '/services/tokenTest/*':        ['isFullyAuthenticated()'],
     '/services/tokenTest/*/*':      ['isFullyAuthenticated()'],
