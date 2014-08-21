@@ -109,28 +109,11 @@ grails.plugins.springsecurity.interceptUrlMap = [
     '/logout/**':                   ['permitAll'],
     // Built in services
     '/services/tokenTest':          ['isFullyAuthenticated()'],
+    '/services/tokenTest/attributes':          ['isFullyAuthenticated()'],
+    '/services/tokenTest/eppa':          ['isFullyAuthenticated()'],
     '/services/tokenTest/':         ['isFullyAuthenticated()'],
     '/services/tokenTest/*':        ['isFullyAuthenticated()'],
     '/services/tokenTest/*/*':      ['isFullyAuthenticated()'],
-    '/source/':                     ['isFullyAuthenticated()'],
-    '/ruleSet/':                    ['isFullyAuthenticated()'],
-    '/ruleSet/*':                   ['isFullyAuthenticated()'],
-    '/ruleSet/*/*':                 ['isFullyAuthenticated()'],
-    '/ruleSet/*/*/*':               ['isFullyAuthenticated()'],
-    '/chain/':                      ['isFullyAuthenticated()'],
-    '/chain/*':                     ['isFullyAuthenticated()'],
-    '/chain/*/*':                   ['isFullyAuthenticated()'],
-    '/job/':                        ['isFullyAuthenticated()'],
-    '/job/*':                       ['isFullyAuthenticated()'],
-    '/job/*/*':                     ['isFullyAuthenticated()'],
-    '/chainServiceHandler/':        ['isFullyAuthenticated()'],
-    '/chainServiceHandler/*':       ['isFullyAuthenticated()'],
-    '/backup/download/':            ["hasRole('ROLE_ITPRSUPERVISOR')"],
-    '/backup/upload/':              ["hasRole('ROLE_ITPRSUPERVISOR')"],
-    // Definable services tied to a rule chain
-    '/service/testServicehandler/': ["hasRole('ROLE_SOME_ROLE_FOR_DEFINEDSERVICE')"],
-    '/service/somechainhandler/':   ['permitAll'],
-    '/service/testService/':        ['permitAll']
 ]
 
 // Added by the Spring Security USF Token plugin:
