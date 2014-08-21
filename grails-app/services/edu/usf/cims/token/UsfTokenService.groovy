@@ -30,7 +30,4 @@ class UsfTokenService extends SpringSecurityService {
     def getEppa() {
         RequestContextHolder.requestAttributes.request.userPrincipal.assertion.principal.attributes.eduPersonPrimaryAffiliation
     }
-    def getAffiliation(){
-        RequestContextHolder.requestAttributes.request.userPrincipal.assertion.principal.attributes.eduPersonAffiliation
-    }
 }
