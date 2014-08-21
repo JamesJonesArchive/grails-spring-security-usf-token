@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
-
+import org.apache.commons.logging.LogFactory
 import grails.converters.*
 import javax.servlet.ServletException
 /**
@@ -18,6 +18,7 @@ import javax.servlet.ServletException
  * @author james
  */
 class UsfTokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    private static final logger = LogFactory.getLog(this)
     def loginUrl
     def webappId
     
@@ -42,7 +43,7 @@ class UsfTokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
                 ])
             ].join('?')
         ]
-        response.getWriter().write(errorResp as JSON);
+        response.getWriter().write((errorResp as JSON).toString());
     }
 }
 
