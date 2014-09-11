@@ -18,7 +18,7 @@ grails.project.dependency.resolution = {
         // specify dependency exclusions here; for example, uncomment this to disable ehcache:
         // excludes 'ehcache'
     }
-    log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    log "debug" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
     legacyResolve true // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
 
@@ -46,9 +46,9 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile ":spring-security-core:1.2.7.3"
-        compile ":spring-security-acl:1.1.1"
-        runtime ":cors:1.1.6"
+        // compile ":spring-security-core:1.2.7.3"
+        // compile ":spring-security-acl:1.1.1"
+        // runtime ":cors:1.1.6"
         // runtime ":hibernate:$grailsVersion"
         // runtime ":jquery:1.8.3"
         // runtime ":resources:1.2"
