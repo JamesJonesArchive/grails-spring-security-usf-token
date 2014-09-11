@@ -1,5 +1,7 @@
 package edu.usf.cims.token
 
+import groovyx.net.http.RESTClient
+import static groovyx.net.http.ContentType.*
 import grails.converters.*
 import grails.plugins.springsecurity.SpringSecurityService
 import org.springframework.web.context.request.RequestContextHolder
@@ -9,18 +11,25 @@ class UsfTokenService extends SpringSecurityService {
     static scope = "singleton"
     
     def validate(String validateUrl,String webappId,String jwtoken) {
-        return withRest(uri: validateUrl) {
-            return post(body : [webappId:webappId,token:jwtoken],requestContentType : 'application/x-www-form-urlencoded') { resp, reader ->
+        def client = new RESTClient()
+        client.ignoreSSLIssues()
+        def result
+        try {
+            result = client.post([uri: validateUrl,body : [service:webappId,token:jwtoken],requestContentType : URLENC ])
+            println "Is this running?"
+            if(result?.data) {
                 try {
-                    def json = JSON.parse(reader.toString())
-                    return !json.containsKey('result')
+                    return !result.data.containsKey('result')
                 } catch(ex) {
                     return false
-                }                
+                }
             }
+            return false            
+        } catch(ex) {
+            return false
         }
     }
-    
+        
     def getUsername(){
         super.authentication.name
     }
