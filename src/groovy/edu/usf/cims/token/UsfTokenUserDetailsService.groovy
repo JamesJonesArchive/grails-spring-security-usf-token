@@ -26,9 +26,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.context.request.ServletRequestAttributes
 import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.security.jwt.JwtHelper
-import org.springframework.security.jwt.JwtHeaderHelper
-import org.springframework.security.jwt.crypto.sign.MacSigner
 import com.nimbusds.jose.JWSObject
 import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jwt.SignedJWT
