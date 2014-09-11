@@ -34,9 +34,9 @@ class UsfTokenService extends SpringSecurityService {
         super.authentication.name
     }
     def getAttributes(){
-        RequestContextHolder.requestAttributes.request.userPrincipal.assertion.principal.attributes
+        RequestContextHolder.requestAttributes.request.userPrincipal.details.attributes
     }
     def getEppa() {
-        RequestContextHolder.requestAttributes.request.userPrincipal.assertion.principal.attributes.eduPersonPrimaryAffiliation
+        RequestContextHolder.requestAttributes.request.userPrincipal.details.attributes.eduPersonPrimaryAffiliation
     }
 }
