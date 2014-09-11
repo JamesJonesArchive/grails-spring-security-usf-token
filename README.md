@@ -50,6 +50,7 @@ The following lines will be added to your Config.groovy:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'edu.usf.cims.token.UsfTokenUserDetails'
 grails.plugins.springsecurity.token.serverUrlPrefix = 'https://authtest.it.usf.edu/AuthTransferService/webtoken'
 grails.plugins.springsecurity.token.webappId = 'http://localhost:8080/${appName}/'
+grails.plugins.springsecurity.token.sharedSecret = 'sharedsecret'
 grails.plugins.springsecurity.token.loginUri = '/login'
 grails.plugins.springsecurity.token.validateUri = '/validate'
 grails.plugins.springsecurity.token.filterProcessesUrl = '/j_spring_token_security_check'
@@ -88,6 +89,7 @@ grails.plugins.springsecurity.token.serverUrlPrefix =
 |<sub>userLookup.userDomainClassName</sub> | <sub>`edu.usf.cims.token.UsfTokenUserDetails`</sub>	 | <sub>SpringSecurity User Class </sub>                                                                                                                                                                            |
 |<sub>token.serverUrlPrefix</sub>	        | <sub>`https://authtest.it.usf.edu/AuthTransferService/webtoken`</sub>  | <sub>the 'root' of all webtoken server URLs    </sub>                                                                                                                                                                 |
 |<sub>token.webappId</sub>	        | <sub>`http://localhost:8080/${appName}/`</sub>  | <sub>the 'root' of registered application  </sub>                                                                                                                                                                 |
+|<sub>token.sharedSecret</sub>	        | <sub>`somesharedsecret`</sub>  | <sub>the 'shared secret' of registered application  </sub>                                                                                                                                                                 |
 |<sub>token.loginUri</sub>	                | <sub>`/login`</sub>	                 | <sub>the login URI, relative to `token.serverUrlPrefix`, e.g. `/login` </sub>                                                                                                                                      |
 |<sub>token.validateUri</sub>	                | <sub>`/validate`</sub>	                 | <sub>the validate URI, relative to `token.serverUrlPrefix`, e.g. `/validate` </sub>                                                                                                                                      |
 |<sub>token.filterProcessesUrl</sub>	| <sub>`/j_spring_token_security_check`</sub>	| <sub>the URL that the filter intercepts for login</sub> |
