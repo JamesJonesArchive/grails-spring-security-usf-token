@@ -49,4 +49,8 @@ class TokenTestController {
             }
         }
     }
+    def getOptions() {
+        println "Hit options"
+        render("")
+    }
 }
