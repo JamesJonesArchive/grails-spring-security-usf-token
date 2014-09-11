@@ -9,27 +9,43 @@ package edu.usf.cims.token
 import org.springframework.security.*
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.providers.*
 import org.springframework.security.userdetails.*
+import com.nimbusds.jose.crypto.MACVerifier
+import com.nimbusds.jwt.SignedJWT
+import com.nimbusds.jose.JWSObject
+import edu.usf.cims.token.UsfTokenAuthenticationException
+import org.apache.commons.logging.LogFactory
 /**
  *
  * @author james
  */
 class UsfTokenAuthenticationProvider implements AuthenticationProvider {
+    private static final logger = LogFactory.getLog(this)
     def userDetailsService
-    def validateUrl
-    def webappId
-    def usfTokenService
-    def key
     
-    // private TicketValidator ticketValidator;
-    Authentication authenticate(Authentication customAuth) {
-        def userDetails = userDetailsService.loadUserByUsername(customAuth.principal)
-        // Verify Token???
-        if(userDetails.attributes.containsKey('jwt')?usfTokenService.validate(validateUrl,webappId,userDetails.attributes['jwt']):false) {
-            // customAuth.authorities = userDetails.authorities
-            return customAuth
-        } 
+    Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        Assert.isInstanceOf(UsfAuthenticationToken, authentication, "Only UsfAuthenticationToken is supported")
+        logger.debug("AuthenticationProvider authenticate invoked!");
+        println "running provider"
+        if (authentication.token) {
+            logger.debug "Trying to validate token ${authentication.token}"
+            // Run validation here
+            def conf = SpringSecurityUtils.securityConfig
+            SignedJWT signedJWT = SignedJWT.parse(authentication.token);
+            if(!signedJWT.verify(new MACVerifier(conf.token.sharedSecret))) {
+                logger.debug "ERROR: Token could not be verified!"
+                throw new UsfTokenAuthenticationException("ERROR: Token could not be verified!")
+                return null
+            }  
+            boolean validated = validate(authentication.token)
+            if(!validated) {
+                logger.debug "ERROR: Token could not be validated!"
+                return null
+            }
+            return authentication
+        }
         return null
     }
 
