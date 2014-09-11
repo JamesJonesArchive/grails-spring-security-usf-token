@@ -27,9 +27,10 @@ grails.project.dependency.resolution = {
         compile('org.springframework.security:org.springframework.security.cas:3.0.4.RELEASE') {
             transitive = false
         }
-        compile('org.springframework.security:spring-security-jwt:1.0.2.RELEASE') {
-            transitive = false
-        }
+        compile 'org.codehaus.jackson:jackson-core-asl:1.8.3'
+        compile 'org.codehaus.jackson:jackson-mapper-asl:1.8.3'
+        compile 'com.nimbusds:nimbus-jose-jwt:3.1.1'
+        compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
     }
 
     plugins {
@@ -39,7 +40,8 @@ grails.project.dependency.resolution = {
             export = false
         }
         compile ':spring-security-core:1.2.7.3'
-        compile ":rest:0.8"
+        compile ":spring-security-acl:1.1.1"
         provided ":webxml:1.4.1"
+        runtime ":cors:1.1.6"
     }
 }
