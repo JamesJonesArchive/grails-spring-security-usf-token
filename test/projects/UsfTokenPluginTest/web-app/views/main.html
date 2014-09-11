@@ -1,23 +1,20 @@
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+<div class="jumbotron" ng-controller="GeteppaCtrl">
+  <h3 class="text-muted">Primary EPPA is {{eppa}} (using the "getEppa" function)</h3>  
 </div>
 
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
-
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
-
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
+<div class="row marketing" ng-controller="GetattributesCtrl">
+  <h2 class="text-muted">Attributes in table form below (using the "getAttributes" function)</h2>
+  <table class="table table-striped" style="border: 1px solid black;">
+    <thead>
+      <tr>
+        <th style="text-align:left">Attribute Name</th>
+        <th style="text-align:left">Attribute Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="(key, value) in attributes">
+        <td> {{key}} </td> <td> {{ value }} </td>
+      </tr>
+    </tbody>
+  </table>  
 </div>
