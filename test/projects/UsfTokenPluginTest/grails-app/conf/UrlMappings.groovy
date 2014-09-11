@@ -8,15 +8,16 @@ class UrlMappings {
         }
 
         "/services/tokenTest"(controller:"tokenTest",parseRequest: true){ 
-            action = [GET:"getUsername", PUT:"error", DELETE:"error", POST:"error"] 
+            action = [GET:"getUsername", PUT:"error", DELETE:"error", POST:"error", OPTIONS: "getOptions"] 
         } 
         "/services/tokenTest/attributes"(controller:"tokenTest",parseRequest: true){ 
-            action = [GET:"getAttributes", PUT:"error", DELETE:"error", POST:"error"] 
+            action = [GET:"getAttributes", PUT:"error", DELETE:"error", POST:"error", OPTIONS: "getOptions"] 
         } 
         "/services/tokenTest/eppa"(controller:"tokenTest",parseRequest: true){ 
-            action = [GET:"getEppa", PUT:"error", DELETE:"error", POST:"error"] 
+            action = [GET:"getEppa", PUT:"error", DELETE:"error", POST:"error", OPTIONS: "getOptions"] 
         } 
         "/"(uri:"/index.html")
+        // "/"(view:"/index")
         "500"(view:'/error')
     }
 }
