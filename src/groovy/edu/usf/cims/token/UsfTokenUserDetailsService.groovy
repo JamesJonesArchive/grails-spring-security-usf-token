@@ -16,16 +16,24 @@
 package edu.usf.cims.token
 
 import javax.servlet.http.HttpServletRequest
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser;
 import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUserDetailsService;
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.context.request.ServletRequestAttributes
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.security.jwt.JwtHelper
+import org.springframework.security.jwt.JwtHeaderHelper
+import org.springframework.security.jwt.crypto.sign.MacSigner
+import com.nimbusds.jose.JWSObject
+import com.nimbusds.jose.crypto.MACVerifier
+import com.nimbusds.jwt.SignedJWT
 import grails.converters.*
+import grails.util.Holders
 /**
  *
  * @author james
@@ -48,10 +56,7 @@ class UsfTokenUserDetailsService implements GrailsUserDetailsService {
      * past that restriction but doesn't grant anything.
      */
     static final List NO_ROLES = [new GrantedAuthorityImpl(SpringSecurityUtils.NO_ROLE)]
-    def authorityAttribute // Usually "eduPersonEntitlement"
-    def usernameAttribute // Usually "sub"
     private boolean convertToUpperCase = true
-    def tokenRequestHeader // Usually "X-Auth-Token"
     
     /** Dependency injection for creating and finding Users **/
     def userMapper
@@ -69,24 +74,26 @@ class UsfTokenUserDetailsService implements GrailsUserDetailsService {
         String token = request.getHeader(tokenRequestHeader);
         return this.loadUserByToken(token)
     }
-    
     UserDetails loadUserByToken(String token) throws UsernameNotFoundException {
-        def jwtHelper = new JwtHelper();
-        def jwt = jwtHelper.decode(token);
-        def claims = JSON.parse(jwt.getClaims())
+        println token
+        def conf = SpringSecurityUtils.securityConfig
+        // Get the Signed JWT (aka: JWS)
+        SignedJWT signedJWT = SignedJWT.parse(token)
+        // Get the claims as a JSON Object
+        def claims = signedJWT.getPayload().toJSONObject()
         // Build list of entitlements as GrantedAuthorities
         def tokenAuthorities = { ->
-            if(authorityAttribute in claims) {
-                return claims[authorityAttribute].collect { authority ->
+            if(conf.token.authorityAttribute in claims) {
+                return claims[conf.token.authorityAttribute].collect { authority ->
                     return (ADD_PREFIX)?new GrantedAuthorityImpl(PREFIX + (this.convertToUpperCase?authority.toUpperCase():authority)):new GrantedAuthorityImpl((this.convertToUpperCase?authority.toUpperCase():authority))
                 }
             }
             return NO_ROLES
         }.call()
         // Check to make sure there is a username in the claims
-        if(!(usernameAttribute in claims)) throw new UsernameNotFoundException('User not in Token')
+        if(!(conf.token.usernameAttribute in claims)) throw new UsernameNotFoundException('User not in Token')
         return new UsfTokenUserDetails(
-            claims[usernameAttribute],
+            claims[conf.token.usernameAttribute],
             tokenAuthorities,
             claims.inject([jwt:token]) { ta,k,v ->
                 if(!(k in ['exp','iss','aud','nbf','jti','iat'])) {
