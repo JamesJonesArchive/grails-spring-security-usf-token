@@ -92,7 +92,8 @@ log4j = {
 cors.url.pattern = [
     '/services/*'
 ]
-
+cors.headers = ['Access-Control-Allow-Headers': 'origin, authorization, accept, content-type, x-requested-with, x-auth-token']
+// grails.plugins.springsecurity.useBasicAuth = true
 grails.plugins.springsecurity.securityConfigType = "InterceptUrlMap"
 
 grails.plugins.springsecurity.interceptUrlMap = [
@@ -119,10 +120,11 @@ grails.plugins.springsecurity.interceptUrlMap = [
 // Added by the Spring Security USF Token plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'edu.usf.cims.token.UsfTokenUserDetails'
 grails.plugins.springsecurity.token.webappId = 'http://localhost:8080/UsfTokenPluginTest/'
+grails.plugins.springsecurity.token.sharedSecret = 'kLm3u2dq6biru0gzdCDOkT91tnQ5Btf8'
 grails.plugins.springsecurity.token.serverUrlPrefix = 'https://authtest.it.usf.edu/AuthTransferService/webtoken'
 grails.plugins.springsecurity.token.loginUri = '/login'
 grails.plugins.springsecurity.token.validateUri = '/validate'
-grails.plugins.springsecurity.token.filterProcessesUrl = '/j_spring_token_security_check'
+grails.plugins.springsecurity.token.filterProcessesUrl = '/**'
 grails.plugins.springsecurity.token.authorityAttribute = 'eduPersonEntitlement'
 grails.plugins.springsecurity.token.usernameAttribute = 'sub'
 grails.plugins.springsecurity.token.tokenHeader = 'X-Auth-Token'
