@@ -15,6 +15,7 @@
 security {
     token {
         webappId = null // must have a registered webapp ID
+        sharedSecret = null // must have the registered shared secret
         serverUrlPrefix = null // must be set, e.g. 'http://localhost:9090/cas'
         loginUri = null // must be set, e.g. '/login'
         validateUri = null // must be set, e.g. '/validate'

@@ -13,12 +13,13 @@ target(main: "Creates artifacts for the Spring Security USF Token plugin") {
 	md5.update(var_dt.getBytes());
 	BigInteger hash = new BigInteger(1, md5.digest());
 	String uniqKey = hash.toString(16);
-	
+    
 	if (configFile.exists()) {
 		configFile.withWriterAppend {
 			it.writeLine '\n// Added by the Spring Security USF Token plugin:'
 			it.writeLine "grails.plugins.springsecurity.userLookup.userDomainClassName = 'edu.usf.cims.token.UsfTokenUserDetails'"
                         it.writeLine "grails.plugins.springsecurity.token.webappId = 'http://localhost:8080/${appName}/'"
+                        it.writeLine "grails.plugins.springsecurity.token.sharedSecret = 'sharedsecret'"
                         it.writeLine "grails.plugins.springsecurity.token.serverUrlPrefix = 'https://authtest.it.usf.edu/AuthTransferService/webtoken'"
 			it.writeLine "grails.plugins.springsecurity.token.loginUri = '/login'"
                         it.writeLine "grails.plugins.springsecurity.token.validateUri = '/validate'"
