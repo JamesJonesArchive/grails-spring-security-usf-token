@@ -15,7 +15,7 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class SpringSecurityUsfTokenGrailsPlugin {
     // the plugin version
-    def version = "0.1"
+    def version = "0.1.0"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.2.1 > *"
     // Map of dependencies for the plugin
