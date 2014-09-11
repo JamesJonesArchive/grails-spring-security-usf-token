@@ -70,7 +70,6 @@ class UsfTokenAuthenticationFilter extends AbstractAuthenticationProcessingFilte
         authenticationFailureHandler.onAuthenticationFailure(request,response,failed)  
     }
     public void doFilter(ServletRequest req, ServletResponse res,FilterChain chain) throws IOException, ServletException {
-        println "Is this filter running?"
         HttpServletRequest request = (HttpServletRequest) req
         HttpServletResponse response = (HttpServletResponse) res
         String token = request.getHeader(tokenHeader)
