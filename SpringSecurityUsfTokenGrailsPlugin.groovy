@@ -1,17 +1,21 @@
 import org.codehaus.groovy.grails.plugins.springsecurity.SecurityFilterPosition
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
-
-import org.springframework.security.cas.ServiceProperties
-// import org.springframework.security.cas.authentication.CasAuthenticationProvider
 import edu.usf.cims.token.UsfTokenAuthenticationProvider
+import edu.usf.cims.token.UsfAuthenticationToken
+import edu.usf.cims.token.UsfTokenUserDetailsService
+import edu.usf.cims.token.UsfTokenService
+import edu.usf.cims.token.UsfTokenAuthenticationFilter
+import edu.usf.cims.token.UsfTokenAuthenticationManager
 import org.springframework.security.cas.authentication.NullStatelessTicketCache
 import org.springframework.security.cas.web.CasAuthenticationEntryPoint
 import org.springframework.security.cas.web.CasAuthenticationFilter
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
+import org.codehaus.groovy.grails.commons.ApplicationHolder
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class SpringSecurityUsfTokenGrailsPlugin {
     // the plugin version
-    def version = "0.1"
+    def version = "0.1.0"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.2.1 > *"
     // Map of dependencies for the plugin
@@ -53,7 +57,7 @@ Brief summary/description of the plugin.
 
     // Online location of the plugin's browseable source code.
     //    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
-
+    def loadAfter = ['springSecurityCore'] 
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional), this event occurs before
         def conf = SpringSecurityUtils.securityConfig
@@ -61,7 +65,7 @@ Brief summary/description of the plugin.
             return
         }
         SpringSecurityUtils.loadSecondaryConfig 'DefaultUsfTokenSecurityConfig'
-        // have to get again after overlaying DefaultCasSecurityConfig
+        // have to get again after overlaying DefaultUsfTokenSecurityConfig
         conf = SpringSecurityUtils.securityConfig
 
         if (!conf.token.active) {
@@ -71,37 +75,7 @@ Brief summary/description of the plugin.
         if (!conf.token.useSingleSignout) {
             return
         }
-        
-        //        // add the filter right after the last context-param
-        //        def contextParam = xml.'context-param'
-        //        contextParam[contextParam.size() - 1] + {
-        //            'filter' {
-        //                    'filter-name'('CAS Single Sign Out Filter')
-        //                    'filter-class'(SingleSignOutFilter.name)
-        //            }
-        //        }
-        //
-        //        // add the filter-mapping right after the last filter
-        //        def mappingLocation = xml.'filter'
-        //        // TODO  this gets in there 2x
-        //        mappingLocation + {
-        //            'filter-mapping'{
-        //                    'filter-name'('CAS Single Sign Out Filter')
-        //                    'url-pattern'('/*')
-        //            }
-        //        }
-        //
-        //        def filterMapping = xml.'filter-mapping'
-        //        filterMapping[filterMapping.size() - 1] + {
-        //            'listener' {
-        //                    'listener-class'(SingleSignOutHttpSessionListener.name)
-        //            }
-        //        }
-        
-        
-        
     }
-
     def doWithSpring = {
         // TODO Implement runtime spring config (optional)
         def conf = SpringSecurityUtils.securityConfig
@@ -122,51 +96,63 @@ Brief summary/description of the plugin.
 
         println 'Configuring Spring Security USF Token ...'
         // Replace userDetailsService with a Token version - all userdetails will come from the token
-        userDetailsService(edu.usf.cims.token.UsfTokenUserDetailsService){
-            authorityAttribNamesFromToken = conf.token.authorityAttribute
-            tokenRequestHeader = conf.token.tokenRequestHeader
-            userMapper = ref('domainUserMapperService')
-        }
-        
+        userDetailsService(edu.usf.cims.token.UsfTokenUserDetailsService)
+                
         SpringSecurityUtils.registerProvider 'usfTokenAuthenticationProvider'
-        SpringSecurityUtils.registerFilter 'casAuthenticationFilter', SecurityFilterPosition.CAS_FILTER
+        SpringSecurityUtils.registerFilter 'usfTokenAuthenticationFilter', SecurityFilterPosition.CAS_FILTER
         
-        authenticationEntryPoint(UsfTokenAuthenticationEntryPoint) {
+        // TODO  document NullProxyGrantingTicketStorage
+        // casProxyGrantingTicketStorage(ProxyGrantingTicketStorageImpl)
+        
+        authenticationEntryPoint(edu.usf.cims.token.UsfTokenAuthenticationEntryPoint) {
             loginUrl = conf.token.serverUrlPrefix + conf.token.loginUri
             webappId = conf.token.webappId
+            cors = application.config.cors
         }
         
-        usfTokenService(edu.usf.cims.token.UsfTokenService)
-                        
-        usfTokenAuthenticationManager(edu.usf.cims.token.UsfTokenAuthenticationManager)
+        accessDeniedHandler(edu.usf.cims.token.UsfTokenAccessDeniedHandler)
+
+        authenticationSuccessHandler(org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler)
+        authenticationFailureHandler(edu.usf.cims.token.UsfTokenAuthenticationFailureHandler) {
+            loginUrl = conf.token.serverUrlPrefix + conf.token.loginUri
+            webappId = conf.token.webappId
+            cors = application.config.cors
+        }
         
-        usfTokenAuthenticationFilter(UsfTokenAuthenticationFilter) {
-            authenticationManager = ref('usfTokenAuthenticationManager')
-            //sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
+        usfTokenAuthenticationFilter(edu.usf.cims.token.UsfTokenAuthenticationFilter,conf.token.filterProcessesUrl) {
             authenticationSuccessHandler = ref('authenticationSuccessHandler')
             authenticationFailureHandler = ref('authenticationFailureHandler')
             rememberMeServices = ref('rememberMeServices')
-            //authenticationDetailsSource = ref('authenticationDetailsSource')
-            //serviceProperties = ref('casServiceProperties')
-            //proxyGrantingTicketStorage = ref('casProxyGrantingTicketStorage')
-            //filterProcessesUrl = conf.cas.filterProcessesUrl // '/j_spring_cas_security_check'
-            //continueChainBeforeSuccessfulAuthentication = conf.apf.continueChainBeforeSuccessfulAuthentication // false
-            //allowSessionCreation = conf.apf.allowSessionCreation // true
-            //proxyReceptorUrl = conf.cas.proxyReceptorUrl
-            
+            tokenHeader = conf.token.tokenHeader           
         }
         
-        usfTokenAuthenticationProvider(UsfTokenAuthenticationProvider) {
+        usfTokenService(edu.usf.cims.token.UsfTokenService)
+        
+        UsfTokenAuthenticationManager(edu.usf.cims.token.UsfTokenAuthenticationManager) {
             userDetailsService = ref('userDetailsService')
-            validateUrl = conf.token.serverUrlPrefix + conf.token.validateUri
-            webappId = conf.token.webappId
-            usfTokenService = ref('usfTokenService')
         }
-
+        usfTokenAuthenticationProvider(edu.usf.cims.token.UsfTokenAuthenticationProvider) {
+            userDetailsService = ref('userDetailsService')
+        }
     }
 
     def doWithDynamicMethods = { ctx ->
         // TODO Implement registering dynamic methods to classes (optional)
+        // def config = ConfigurationHolder.config
+        def conf = SpringSecurityUtils.securityConfig
+        def application = ApplicationHolder.application
+        
+        def usfTokenUserDetailsService = new UsfTokenUserDetailsService()
+        UsfAuthenticationToken.metaClass.loadUserByToken  = {token->  
+            return usfTokenUserDetailsService.loadUserByToken(token)
+        }
+        
+        UsfTokenAuthenticationManager.metaClass.validate = {token ->            
+            return ctx.getBean('usfTokenService').validate(conf.token.serverUrlPrefix + conf.token.validateUri,conf.token.webappId,token)
+        }
+        UsfTokenAuthenticationProvider.metaClass.validate = {token ->
+            return ctx.getBean('usfTokenService').validate(conf.token.serverUrlPrefix + conf.token.validateUri,conf.token.webappId,token)
+        }
     }
 
     def doWithApplicationContext = { applicationContext ->

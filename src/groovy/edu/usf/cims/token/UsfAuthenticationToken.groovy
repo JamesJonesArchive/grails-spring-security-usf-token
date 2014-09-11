@@ -7,7 +7,6 @@
 package edu.usf.cims.token
 
 import org.springframework.security.authentication.AbstractAuthenticationToken
-import org.springframework.security.jwt.JwtHelper
 /**
  *
  * @author james
@@ -15,20 +14,18 @@ import org.springframework.security.jwt.JwtHelper
 class UsfAuthenticationToken extends AbstractAuthenticationToken {
     private static final long serialVersionUID = 1L;
     private final Object principal;
-    private Object details;
- 
     Collection  authorities;
     String token
-    
+    /**
+    * Holds the API token, passed by the client via a custom HTTP header
+    */
     public UsfAuthenticationToken( String jwtToken) {
         super(null);
         super.setAuthenticated(true); // must use super, as we override
         token = jwtToken
-
-        UsfTokenUserDetailsService adapter = new UsfTokenUserDetailsService();
-        
+        println "token anyone"
         // Loads userdetails in for the principal and details
-        principal = adapter.loadUserByToken(token)
+        principal = loadUserByToken(token)
         // Details gets a copy of the UserDetails object as well
         details = principal
         authorities = (Collection) principal.getAuthorities() 
@@ -36,18 +33,13 @@ class UsfAuthenticationToken extends AbstractAuthenticationToken {
  
     @Override
     public Object getCredentials() {
-        return "";
+        return token;
     }
  
     @Override
     public Object getPrincipal() {
         return principal;
     }
- 
-    @Override
-    public Collection getAuthorities() {
-        return authorities;
-    }	
-    
+     
 }
 

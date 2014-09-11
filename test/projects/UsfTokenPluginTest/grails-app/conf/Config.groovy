@@ -13,7 +13,7 @@
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
-grails.mime.use.accept.header = false
+grails.mime.use.accept.header = true
 grails.mime.types = [
     all:           '*/*',
     atom:          'application/atom+xml',
@@ -89,3 +89,43 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+cors.url.pattern = [
+    '/services/*'
+]
+cors.headers = ['Access-Control-Allow-Headers': 'origin, authorization, accept, content-type, x-requested-with, x-auth-token']
+// grails.plugins.springsecurity.useBasicAuth = true
+grails.plugins.springsecurity.securityConfigType = "InterceptUrlMap"
+
+grails.plugins.springsecurity.interceptUrlMap = [
+    // Basic resources
+    '/js/**':                       ['permitAll'],
+    '/css/**':                      ['permitAll'],
+    '/images/**':                   ['permitAll'],
+    // Front Page
+    '/*':                           ['permitAll'],
+    // Basic handling for errors and auth
+    '/error':                       ['permitAll'],
+    '/errors/**':                   ['permitAll'],
+    '/login/**':                    ['permitAll'],
+    '/logout/**':                   ['permitAll'],
+    // Built in services
+    '/services/tokenTest':          ['isFullyAuthenticated()'],
+    '/services/tokenTest/attributes':          ['isFullyAuthenticated()'],
+    '/services/tokenTest/eppa':          ['isFullyAuthenticated()'],
+    '/services/tokenTest/':         ['isFullyAuthenticated()'],
+    '/services/tokenTest/*':        ['isFullyAuthenticated()'],
+    '/services/tokenTest/*/*':      ['isFullyAuthenticated()'],
+]
+
+// Added by the Spring Security USF Token plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'edu.usf.cims.token.UsfTokenUserDetails'
+grails.plugins.springsecurity.token.webappId = 'http://localhost:8080/UsfTokenPluginTest/'
+grails.plugins.springsecurity.token.sharedSecret = 'kLm3u2dq6biru0gzdCDOkT91tnQ5Btf8'
+grails.plugins.springsecurity.token.serverUrlPrefix = 'https://authtest.it.usf.edu/AuthTransferService/webtoken'
+grails.plugins.springsecurity.token.loginUri = '/login'
+grails.plugins.springsecurity.token.validateUri = '/validate'
+grails.plugins.springsecurity.token.filterProcessesUrl = '/**'
+grails.plugins.springsecurity.token.authorityAttribute = 'eduPersonEntitlement'
+grails.plugins.springsecurity.token.usernameAttribute = 'sub'
+grails.plugins.springsecurity.token.tokenHeader = 'X-Auth-Token'
+grails.plugins.springsecurity.token.key = '11d7b1213e9c3f08b73d89b1fc00bddc' //unique value for each app
